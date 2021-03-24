@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="icon_size">28dp</dimen>
+    <dimen name="bottom_bar_size">60dp</dimen>
+    <dimen name="app_bar_elevation">8dp</dimen>
+    <dimen name="slider_thumb_size">7dp</dimen>
+</resources>

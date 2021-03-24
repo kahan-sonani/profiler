@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Profiler" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/reply_blue_medium</item>
+        <item name="colorPrimaryVariant">@color/reply_blue_dark</item>
+        <item name="colorOnPrimary">@color/reply_blue_very_light</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorControlNormal">@color/reply_blue_very_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorSecondary">@color/reply_blue_medium</item>
+        <item name="colorSecondaryVariant">@color/reply_blue_dark</item>
+        <item name="colorOnSecondary">@color/reply_blue_very_light</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnPrimary</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.Profiler.HomeAppBarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextAppearance">@style/Theme.Profiler.TextAppearance</item>
+        <item name="android:background">@color/reply_blue_very_light</item>
+    </style>
+    <style name="Theme.Profiler.TextAppearance" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/roboto_slab_bold</item>
+    </style>
+
+    <style name="Heading" parent="Widget.MaterialComponents.TextView">
+        <item name="fontFamily">@font/roboto_slab_bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="SubHeading" parent="Widget.MaterialComponents.TextView">
+        <item name="fontFamily">@font/roboto_slab</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Theme.Profiler.BottomNavigationStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="android:background">@color/reply_blue_very_light</item>
+        <item name="itemIconTint">@color/reply_blue_dark</item>
+    </style>
+
+    <color name="dayPressed">?attr/colorPrimary</color>
+    <color name="daySelected">?attr/colorPrimary</color>
+    <color name="daySelectedTextColor">@android:color/white</color>
+    <color name="dayDeselected">@color/reply_blue_very_light</color>
+    <color name="dayDeselectedTextColor">@android:color/black</color>
+</resources>

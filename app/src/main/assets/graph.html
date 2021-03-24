@@ -1,0 +1,40 @@
+<html>
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['timeline']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var container = document.getElementById('timeline');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+
+        dataTable.addColumn({ type: 'string', id: 'President' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+        dataTable.addRows([
+          [ 'Monday', new Date(0,0,0,4, 3, 30), new Date(0,0,0,5, 2, 4) ],
+          [ 'Monday', new Date(0,0,0,2, 3, 30), new Date(0,0,0,3, 2, 4) ],
+          [ 'Tuesday', new Date(0,0,0,1, 2, 4),  new Date(0,0,0,2, 2, 4) ],
+          [ 'Wednesday', new Date(0,0,0,5, 3, 30), new Date(0,0,0,7, 2, 4) ],
+          [ 'Thursday', new Date(0,0,0,12, 3, 30), new Date(0,0,0,12, 4, 45) ],
+          [ 'Friday', new Date(0,0,0,4, 3, 30), new Date(0,0,0,7, 2, 4) ],
+          [ 'Saturday', new Date(0,0,0,11, 3, 30), new Date(0,0,0,12, 0, 0) ],
+          [ 'Sunday',  new Date(0,0,0,5, 2, 4),  new Date(0,0,0,7, 2, 4) ]]);
+
+        var options = {
+                       'width':500,
+                       'height':800,
+                       timeline: { showBarLabels: true },
+                       animation:{"startup": true, duration: 1000, easing: 'out'}};
+
+        chart.draw(dataTable, options);
+
+      }
+    </script>
+</head>
+<body>
+<div id="timeline"></div>
+</body>
+</html>

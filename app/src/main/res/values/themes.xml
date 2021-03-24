@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Profiler" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/reply_blue_medium</item>
+        <item name="colorPrimaryVariant">@color/reply_blue_dark</item>
+        <item name="colorOnPrimary">@color/reply_blue_very_light</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorControlNormal">@color/reply_blue_very_light</item>
+        <item name="colorSecondary">@color/reply_blue_medium</item>
+        <item name="colorSecondaryVariant">@color/reply_blue_dark</item>
+        <item name="colorOnSecondary">@color/reply_blue_very_light</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

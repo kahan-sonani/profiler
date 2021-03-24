@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/menu_show_graph">
+
+    <fragment
+        android:id="@+id/menu_add_profile"
+        android:name="com.reb3llion.profiler.fragments.AddOrEditProfileFragment"
+        android:label="Add Profile"
+        tools:layout="@layout/fragment_add_edit_profile" />
+    <fragment
+        android:id="@+id/menu_show_graph"
+        android:name="com.reb3llion.profiler.fragments.ShowProfileGraphFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_show_profile_graph" >
+    </fragment>
+    <fragment
+        android:id="@+id/menu_show_list"
+        android:name="com.reb3llion.profiler.fragments.ListProfilesFragment"
+        android:label="list_profiles_fragment"
+        tools:layout="@layout/list_profiles_fragment" />
+</navigation>
