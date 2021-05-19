@@ -12,9 +12,4 @@
     <color name="black">#000</color>
     <color name="white">#fff</color>
 
-    <!-- Customizing colors for disabled days-->
-    <color name="daySelectedAndDisabled">#43444F</color>
-    <color name="daySelectedAndDisabledTextColor">@color/daySelectedTextColor</color>
-    <color name="dayDeselectedAndDisabled">@color/dayDeselected</color>
-    <color name="dayDeselectedAndDisabledTextColor">@android:color/darker_gray</color>
 </resources>

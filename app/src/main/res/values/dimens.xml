@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="icon_size">28dp</dimen>
-    <dimen name="bottom_bar_size">60dp</dimen>
+    <dimen name="bottom_bar_size">?attr/actionBarSize</dimen>
     <dimen name="app_bar_elevation">8dp</dimen>
-    <dimen name="slider_thumb_size">7dp</dimen>
+    <dimen name="slider_thumb_size">8dp</dimen>
+    <dimen name="double_action_bar_size">112dp</dimen>
+    <dimen name="margin_top_divider">5dp</dimen>
+    <dimen name="divider_width_1">1dp</dimen>
+    <dimen name="profile_list_item_time">32sp</dimen>
 </resources>

@@ -16,4 +16,8 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/reply_blue_medium</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="WeekDaySelectorStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

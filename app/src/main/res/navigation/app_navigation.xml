@@ -3,13 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
-    app:startDestination="@id/menu_show_graph">
+    app:startDestination="@id/menu_show_list">
 
     <fragment
-        android:id="@+id/menu_add_profile"
+        android:id="@+id/menu_add_edit_profile"
         android:name="com.reb3llion.profiler.fragments.AddOrEditProfileFragment"
         android:label="Add Profile"
-        tools:layout="@layout/fragment_add_edit_profile" />
+        tools:layout="@layout/fragment_add_edit_profile" >
+        <argument
+            android:defaultValue="0"
+            android:name="mode"
+            app:argType="integer" />
+        <argument
+            android:defaultValue="-1"
+            android:name="profileIndex"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/menu_show_graph"
         android:name="com.reb3llion.profiler.fragments.ShowProfileGraphFragment"
@@ -20,5 +29,12 @@
         android:id="@+id/menu_show_list"
         android:name="com.reb3llion.profiler.fragments.ListProfilesFragment"
         android:label="list_profiles_fragment"
-        tools:layout="@layout/list_profiles_fragment" />
+        tools:layout="@layout/list_profiles_fragment" >
+        <action
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popExitAnim="@anim/fragment_close_exit"
+            android:id="@+id/action_menu_show_list_to_menu_add_profile"
+            app:destination="@id/menu_add_edit_profile" />
+    </fragment>
 </navigation>

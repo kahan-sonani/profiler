@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/reply_blue_medium</item>
         <item name="colorPrimaryVariant">@color/reply_blue_dark</item>
         <item name="colorOnPrimary">@color/reply_blue_very_light</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/reply_blue_medium</item>
         <!-- Secondary brand color. -->
         <item name="colorControlNormal">@color/reply_blue_very_light</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -42,9 +42,12 @@
         <item name="itemIconTint">@color/reply_blue_dark</item>
     </style>
 
-    <color name="dayPressed">?attr/colorPrimary</color>
-    <color name="daySelected">?attr/colorPrimary</color>
-    <color name="daySelectedTextColor">@android:color/white</color>
-    <color name="dayDeselected">@color/reply_blue_very_light</color>
-    <color name="dayDeselectedTextColor">@android:color/black</color>
+    <style name="divider_style">
+        <item name="android:background">?attr/colorControlNormal</item>
+    </style>
+    <style name="WeekDaySelectorStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <color name="text_color">@color/reply_blue_medium</color>
 </resources>

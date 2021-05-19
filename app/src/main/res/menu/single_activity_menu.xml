@@ -2,20 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/menu_show_graph"
+        android:orderInCategory="2"
         android:icon="@drawable/ic_baseline_bar_chart_24"
         app:showAsAction="ifRoom"
         android:title="@string/profile_timeline"/>
     <item android:id="@+id/menu_show_list"
+        android:orderInCategory="1"
         android:icon="@drawable/ic_baseline_list_24"
         android:title="@string/profile_list"
         app:showAsAction="ifRoom"/>
-    <item android:id="@+id/menu_add_profile"
-        android:icon="@drawable/ic_baseline_add_24"
+    <item android:id="@+id/menu_add_edit_profile"
+        android:orderInCategory="3"
+        android:icon="@drawable/ic_baseline_rule_24"
         app:showAsAction="ifRoom"
-        android:title="@string/add_profile"
+        android:title="@string/menu_add_edit_profile"
         />
     <item android:icon="@drawable/ic_baseline_help_24"
         android:id="@+id/menu_help"
+        android:orderInCategory="4"
         android:title="@string/menu_help"
         android:onClick="onHelp"
         app:showAsAction="ifRoom">
