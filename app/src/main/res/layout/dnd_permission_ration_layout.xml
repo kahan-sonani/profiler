@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/padding_between_views"
+    android:paddingBottom="@dimen/padding_between_views_quarter"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/SubHeading"
+        android:paddingStart="64dp"
+        android:paddingEnd="@dimen/padding_between_views"
+        android:id="@+id/dnd_header"
+        android:text="@string/dnd_required"
+        android:textColor="?attr/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:fontFamily="@font/roboto_slab"
+        android:drawableStart="@drawable/ic_baseline_warning_24"
+        app:drawableTint="@color/red"
+        android:drawablePadding="@dimen/padding_between_views"
+        android:paddingTop="@dimen/padding_between_views_quarter"
+        android:paddingStart="@dimen/padding_between_views"
+        android:paddingEnd="@dimen/padding_between_views"
+        android:text="@string/dnd_rationale_2"
+        android:id="@+id/dnd_rationale2"
+        android:layout_below="@id/dnd_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:paddingStart="64dp"
+        android:paddingEnd="@dimen/padding_between_views"
+        android:text="@string/go_to_settings"
+        android:textAppearance="@style/SubHeading"
+        android:id="@+id/settings"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/dnd_rationale2"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

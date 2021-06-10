@@ -14,5 +14,6 @@
         <item>@font/poppins_bold</item>
         <item>@font/roboto_slab</item>
         <item>@font/roboto_slab_bold</item>
+        <item>@font/sanchez_italic</item>
     </array>
 </resources>

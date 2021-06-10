@@ -7,7 +7,6 @@
         <item name="colorOnPrimary">@color/reply_blue_very_light</item>
         <item name="android:textColor">@color/reply_blue_medium</item>
         <!-- Secondary brand color. -->
-        <item name="colorControlNormal">@color/reply_blue_very_light</item>
         <item name="colorSecondary">@color/reply_blue_medium</item>
         <item name="colorSecondaryVariant">@color/reply_blue_dark</item>
         <item name="colorOnSecondary">@color/reply_blue_very_light</item>
@@ -27,6 +26,7 @@
 
     <style name="WeekDaySelectorStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12dp</item>
     </style>
 
     <style name="Theme.Profiler.BottomNavigationStyle" parent="Widget.Design.BottomNavigationView">
@@ -35,8 +35,22 @@
     </style>
 
     <style name="divider_style">
-        <item name="android:background">?attr/colorControlNormal</item>
+        <item name="android:background">@color/color_background</item>
     </style>
 
+    <style name="VolumeSliderOpenButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAppearance">@style/Heading</item>
+        <item name="android:padding">@dimen/padding_between_views_1x5</item>
+    </style>
+
+    <style name="ThemeOptionsStyle" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="ThemePopUpStyle" parent="ThemeOverlay.AppCompat.Light"/>
+
     <color name="text_color">@color/reply_blue_medium</color>
+    <color name="color_background">@color/reply_blue_very_light</color>
+    <color name="red">#d44</color>
 </resources>

@@ -6,8 +6,6 @@
         <item name="colorPrimaryVariant">@color/blue_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="android:textColor">@color/white</item>
-        <item name="colorControlNormal">@color/reply_blue_medium</item>
         <item name="android:windowBackground">@color/reply_blue_dark</item>
         <item name="colorSecondary">@color/blue_medium</item>
         <item name="colorSecondaryVariant">@color/blue_dark</item>
@@ -19,5 +17,26 @@
 
     <style name="WeekDaySelectorStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12dp</item>
     </style>
+
+    <style name="VolumeSliderOpenButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:insetRight">0dp</item>
+        <item name="android:textAppearance">@style/Heading</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">@dimen/padding_between_views_1x5</item>
+    </style>
+
+    <style name="ThemeOptionsStyle" parent="ThemeOverlay.AppCompat.Dark"/>
+    <style name="ThemePopUpStyle" parent="ThemeOverlay.AppCompat.Dark"/>
+
+    <style name="divider_style">
+        <item name="android:background">@color/color_background</item>
+    </style>
+
+    <color name="text_color">@color/white</color>
+    <color name="color_background">@color/reply_blue_medium</color>
+    <color name="red">#d33</color>
 </resources>

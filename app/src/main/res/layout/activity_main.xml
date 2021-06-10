@@ -5,18 +5,25 @@
     tools:viewBindingIgnore="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SingleActivity">
+    tools:context=".presenter.activities.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/homeToolbar"
+            app:popupTheme="@style/ThemeOptionsStyle"
+            android:theme="@style/ThemePopUpStyle"
             style="@style/Theme.Profiler.HomeAppBarStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <include
+                layout="@layout/main_activity_app_bar_custom_layout" />
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <fragment
