@@ -1,35 +1,35 @@
  package com.reb3llion.profiler.presenter.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+ import android.annotation.SuppressLint;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.provider.Settings;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.ConcatAdapter;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
+ import androidx.fragment.app.Fragment;
+ import androidx.lifecycle.ViewModelProvider;
+ import androidx.navigation.fragment.NavHostFragment;
+ import androidx.recyclerview.widget.ConcatAdapter;
+ import androidx.recyclerview.widget.DividerItemDecoration;
+ import androidx.recyclerview.widget.ItemTouchHelper;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
-import com.reb3llion.profiler.R;
-import com.reb3llion.profiler.data.repository.room.entities.Profile;
-import com.reb3llion.profiler.databinding.ListProfilesFragmentBinding;
-import com.reb3llion.profiler.presenter.adapters.DNDPermissionAdapter;
-import com.reb3llion.profiler.presenter.adapters.ProfileAdapterInteractor;
-import com.reb3llion.profiler.presenter.adapters.ProfileListAdapter;
-import com.reb3llion.profiler.presenter.enums.MODE;
-import com.reb3llion.profiler.presenter.models.ListProfileFragmentModel;
+ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+ import com.google.android.material.snackbar.BaseTransientBottomBar;
+ import com.google.android.material.snackbar.Snackbar;
+ import com.reb3llion.profiler.R;
+ import com.reb3llion.profiler.data.repository.room.entities.Profile;
+ import com.reb3llion.profiler.databinding.ListProfilesFragmentBinding;
+ import com.reb3llion.profiler.presenter.adapters.DNDPermissionAdapter;
+ import com.reb3llion.profiler.presenter.adapters.ProfileAdapterInteractor;
+ import com.reb3llion.profiler.presenter.adapters.ProfileListAdapter;
+ import com.reb3llion.profiler.presenter.enums.MODE;
+ import com.reb3llion.profiler.presenter.models.ListProfileFragmentModel;
 
 public class ListProfilesFragment extends Fragment {
 
@@ -101,9 +101,7 @@ public class ListProfilesFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                if(viewHolder.getItemViewType() == DNDPermissionAdapter.TYPE)
-                    concatAdapter.notifyItemChanged(0);
-                else {
+                if (viewHolder instanceof ProfileListAdapter.ProfileViewHolder){
                     new MaterialAlertDialogBuilder(requireContext())
                             .setTitle(R.string.warning)
                             .setCancelable(false)
@@ -112,7 +110,10 @@ public class ListProfilesFragment extends Fragment {
                                 model.deleteProfile(profileListAdapter.getProfileAt(viewHolder.getBindingAdapterPosition()));
                             })
                             .setNegativeButton(R.string.no, (dialog, which) -> profileListAdapter.notifyItemChanged(viewHolder.getBindingAdapterPosition())).show();
+
                 }
+                else
+                    concatAdapter.notifyItemChanged(0);
             }
         }).attachToRecyclerView(binding.profileList);
 
