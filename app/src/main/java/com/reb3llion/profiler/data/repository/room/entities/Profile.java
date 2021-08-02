@@ -1,16 +1,21 @@
 package com.reb3llion.profiler.data.repository.room.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.reb3llion.profiler.BR;
+import com.reb3llion.profiler.data.repository.room.Converters;
+import com.reb3llion.profiler.domain.business.ProfileExecutionState;
+import com.reb3llion.profiler.domain.business.ProfileNotRunningExecutionState;
 
 @Entity
-public class Profile extends BaseObservable {
+public class Profile extends BaseObservable implements Parcelable {
 
     public static final String TAG = "Profile.class";
     public static final String MEDIA = "Media";
@@ -18,6 +23,7 @@ public class Profile extends BaseObservable {
     public static final String RINGTONE = "Ringtone";
     public static final String CALL = "Call";
     public static final String ALARM = "Alarm";
+    public static final String DND = "DND";
 
     public static final String SUN = "Sun";
     public static final String MON = "Mon";
@@ -28,39 +34,111 @@ public class Profile extends BaseObservable {
     public static final String SAT = "Sat";
 
     public static final String PLACEHOLDER_TIME = "--:--";
+    public static final String PLACEHOLDER_LABEL = "No Label";
     public static final String tableName = "Profile";
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+    public static final Parcelable.Creator<Profile> CREATOR = new Parcelable.Creator<Profile>() {
 
-    public Profile(){
+        @Override
+        public Profile createFromParcel(Parcel parcel) {
+            return new Profile(parcel);
+        }
 
+        @Override
+        public Profile[] newArray(int size) {
+            return new Profile[size];
+        }
+    };
+    private String label;
+    private String startTime;
+    private String endTime;
+    private boolean Sun;
+    private boolean Mon;
+    private boolean Tue;
+    private boolean Wed;
+    private boolean Thu;
+    private boolean Fri;
+    private boolean Sat;
+    private boolean mediaSelected;
+    private boolean notificationSelected;
+    private boolean callSelected;
+    private boolean ringtoneSelected;
+    private boolean alarmSelected;
+    private int media;
+    private int notification;
+    private int call;
+    private int ringtone;
+    private int alarm;
+    private boolean enable;
+    private int dndPreference;
+    private ProfileExecutionState state;
+
+    public Profile() {
+
+        label = PLACEHOLDER_LABEL;
         startTime = PLACEHOLDER_TIME;
         endTime = PLACEHOLDER_TIME;
 
         Sun = Sat = false;
         Mon = Tue = Wed = Thu = Fri = true;
 
-        media = notification = call = ringtone = alarm = 0;
+        media = notification = ringtone = alarm = 0;
+        call = 1;
         mediaSelected = callSelected = notificationSelected = ringtoneSelected = alarmSelected = false;
 
         enable = false;
-
+        dndPreference = 1;
+        state = new ProfileNotRunningExecutionState();
     }
 
-    public Profile(Profile profile){
+    private Profile(Parcel in) {
+
+        id = in.readLong();
+        label = in.readString();
+        startTime = in.readString();
+        endTime = in.readString();
+
+        Sun = in.readByte() != 0;
+        Mon = in.readByte() != 0;
+        Tue = in.readByte() != 0;
+        Wed = in.readByte() != 0;
+        Thu = in.readByte() != 0;
+        Fri = in.readByte() != 0;
+        Sat = in.readByte() != 0;
+
+        mediaSelected = in.readByte() != 0;
+        notificationSelected = in.readByte() != 0;
+        callSelected = in.readByte() != 0;
+        alarmSelected = in.readByte() != 0;
+        ringtoneSelected = in.readByte() != 0;
+
+        media = in.readInt();
+        notification = in.readInt();
+        call = in.readInt();
+        alarm = in.readInt();
+        ringtone = in.readInt();
+
+        enable = in.readByte() != 0;
+        dndPreference = in.readInt();
+        state = Converters.stateToObject(in.readInt());
+    }
+
+    public Profile(Profile profile) {
 
         id = profile.id;
-        startTime = profile.getStartTime();
-        endTime = profile.getEndTime();
+        label = profile.label;
+        startTime = profile.startTime;
+        endTime = profile.endTime;
 
         Sun = profile.Sun;
-        Sat = profile.Sat;
         Mon = profile.Mon;
         Tue = profile.Tue;
         Wed = profile.Wed;
         Thu = profile.Thu;
         Fri = profile.Fri;
+        Sat = profile.Sat;
 
         media = profile.media;
         mediaSelected = profile.mediaSelected;
@@ -74,50 +152,46 @@ public class Profile extends BaseObservable {
         alarmSelected = profile.alarmSelected;
 
         enable = profile.enable;
-        dnd = profile.dnd;
+        dndPreference = profile.dndPreference;
+        state = profile.state;
     }
-    private String startTime;
-    private String endTime;
-
-    private boolean Sun;
-    private boolean Mon;
-    private boolean Tue;
-    private boolean Wed;
-    private boolean Thu;
-    private boolean Fri;
-    private boolean Sat;
-
-    private boolean mediaSelected;
-    private boolean notificationSelected;
-    private boolean callSelected;
-    private boolean ringtoneSelected;
-    private boolean alarmSelected;
-
-    private int media;
-    private int notification;
-    private int call;
-    private int ringtone;
-    private int alarm;
-
-    private boolean enable;
-    private boolean dnd;
-
 
     @Bindable
-    public boolean getDnd(){
-        return dnd;
+    public ProfileExecutionState getState() {
+        return state;
     }
 
-    public void setDnd(boolean value){
-        this.dnd = value;
-        notifyPropertyChanged(BR.dnd);
+    public void setState(ProfileExecutionState state) {
+        this.state = state;
+        notifyPropertyChanged(BR.state);
     }
+
     @Bindable
-    public boolean getEnable(){
+    public int getDndPreference() {
+        return dndPreference;
+    }
+
+    public void setDndPreference(int preference) {
+        dndPreference = preference;
+        notifyPropertyChanged(BR.dndPreference);
+    }
+
+    @Bindable
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+        notifyPropertyChanged(BR.label);
+    }
+
+    @Bindable
+    public boolean getEnable() {
         return enable;
     }
 
-    public void setEnable(boolean enable){
+    public void setEnable(boolean enable) {
         this.enable = enable;
         notifyPropertyChanged(BR.enable);
     }
@@ -173,29 +247,35 @@ public class Profile extends BaseObservable {
     public boolean getSun() {
         return Sun;
     }
+
+    public void setSun(boolean sun) {
+        this.Sun = sun;
+        notifyPropertyChanged(BR.sun);
+    }
+
     @Bindable
     public boolean getMon() {
         return Mon;
     }
+
+    public void setMon(boolean mon) {
+        this.Mon = mon;
+        notifyPropertyChanged(BR.mon);
+    }
+
     @Bindable
     public boolean getTue() {
         return Tue;
     }
+
     @Bindable
     public boolean getWed() {
         return Wed;
     }
+
     @Bindable
     public boolean getThu() {
         return Thu;
-    }
-    @Bindable
-    public boolean getFri() {
-        return Fri;
-    }
-    @Bindable
-    public boolean getSat() {
-        return Sat;
     }
 
     public void setStartTime(@NonNull String startTime) {
@@ -226,28 +306,31 @@ public class Profile extends BaseObservable {
         return id;
     }
 
-    public void setMon(boolean mon) {
-        Mon = mon;
-        notifyPropertyChanged(BR.mon);
+    @Bindable
+    public boolean getFri() {
+        return Fri;
     }
+
     @Bindable
     public int getAlarm() {
         return alarm;
     }
 
     public void setFri(boolean fri) {
-        Fri = fri;
+        this.Fri = fri;
         notifyPropertyChanged(BR.fri);
     }
+
     @Bindable
     public int getCall() {
         return call;
     }
 
-    public void setSun(boolean sun) {
-        Sun = sun;
-        notifyPropertyChanged(BR.sun);
+    @Bindable
+    public boolean getSat() {
+        return Sat;
     }
+
     @Bindable
     public int getMedia() {
         return media;
@@ -291,6 +374,7 @@ public class Profile extends BaseObservable {
         notifyPropertyChanged(BR.wed);
     }
 
+
     public void setAlarm(int alarm) {
         this.alarm = alarm;
         notifyPropertyChanged(BR.alarm);
@@ -306,68 +390,47 @@ public class Profile extends BaseObservable {
         notifyPropertyChanged(BR.ringtone);
     }
 
-    @Ignore
-    public void setVolume(String name, float value){
-
-        switch (name){
-            case MEDIA: setMedia((int) value);break;
-            case NOTIFICATION:setNotification((int) value);break;
-            case CALL:setCall((int) value);break;
-            case RINGTONE:setRingtone((int) value);break;
-            case ALARM:setAlarm((int) value);break;
-
-        }
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
 
-    @Ignore
-    public boolean isStartTimeSpecified(){
-        return Time.isTimeSpecified(startTime);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(label);
+        dest.writeString(startTime);
+        dest.writeString(endTime);
+        dest.writeByte((byte) (Sun ? 1 : 0));
+        dest.writeByte((byte) (Mon ? 1 : 0));
+        dest.writeByte((byte) (Tue ? 1 : 0));
+        dest.writeByte((byte) (Wed ? 1 : 0));
+        dest.writeByte((byte) (Thu ? 1 : 0));
+        dest.writeByte((byte) (Fri ? 1 : 0));
+        dest.writeByte((byte) (Sat ? 1 : 0));
+        dest.writeByte((byte) (mediaSelected ? 1 : 0));
+        dest.writeByte((byte) (notificationSelected ? 1 : 0));
+        dest.writeByte((byte) (callSelected ? 1 : 0));
+        dest.writeByte((byte) (alarmSelected ? 1 : 0));
+        dest.writeByte((byte) (ringtoneSelected ? 1 : 0));
+        dest.writeInt(media);
+        dest.writeInt(notification);
+        dest.writeInt(call);
+        dest.writeInt(alarm);
+        dest.writeInt(ringtone);
+        dest.writeByte((byte) (enable ? 1 : 0));
+        dest.writeInt(dndPreference);
+        dest.writeInt(state.getInt());
     }
 
-    @Ignore
-    public boolean isEndTimeSpecified(){
-        return Time.isTimeSpecified(endTime);
-    }
-
-    @Ignore
-    public boolean isNoDaySelected(){
-        return !(Sun || Mon || Tue || Wed || Thu || Fri || Sat);
-    }
-
-    @Ignore
-    public boolean isNoVolumeSettingsSelected(){
-        return !dnd && !(mediaSelected || notificationSelected || callSelected || ringtoneSelected || alarmSelected);
-    }
-
-    @Ignore
-    public boolean isTimeValid(){
-        Time sTime = Time.ToTimeObject(getStartTime());
-        Time eTime = Time.ToTimeObject(getEndTime());
-        if(sTime.hour > eTime.hour)
-            return false;
-        else if(sTime.hour == eTime.hour){
-            return sTime.minute < eTime.minute;
-        }
-        return true;
-    }
-
-    @Ignore
-    public boolean isProfileValid(){
-        return isEndTimeSpecified()
-                        && isStartTimeSpecified()
-                        && isTimeValid()
-                        && !isNoVolumeSettingsSelected()
-                        && !isNoDaySelected();
-    }
-
-    public static class Time{
+    public static class Time {
 
         public static final String FORMAT24H = "HH:mm";
         public static final String FORMAT12H = "hh:mm";
         public static final String FORMAT_AM_PM_12H = "hh:mm a";
 
-        public Time(int hour, int minute){
+        public Time(int hour, int minute) {
             this.hour = hour;
             this.minute = minute;
         }

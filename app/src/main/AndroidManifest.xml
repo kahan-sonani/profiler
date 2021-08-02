@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
@@ -19,20 +20,45 @@
         <activity
             android:parentActivityName=".presenter.activities.MainActivity"
             android:label="@string/settings"
-            android:name=".presenter.activities.SettingsActivity">
-        </activity>
-        <activity
-            android:name=".presenter.activities.MainActivity">
+            android:name=".presenter.activities.SettingsActivity"></activity>
+        <activity android:name=".presenter.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".presenter.receivers.ProfileStartEventBroadcastReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="android.profiler.PROFILER_BROADCAST_RECEIVER" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".presenter.receivers.ProfileEndEventBroadcastReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="android.profiler.PROFILER_BROADCAST_RECEIVER" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".presenter.receivers.ProfilesReInitializeOnBootReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>

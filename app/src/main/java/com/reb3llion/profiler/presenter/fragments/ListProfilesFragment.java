@@ -31,27 +31,27 @@
  import com.reb3llion.profiler.presenter.enums.MODE;
  import com.reb3llion.profiler.presenter.models.ListProfileFragmentModel;
 
-public class ListProfilesFragment extends Fragment {
+ public class ListProfilesFragment extends Fragment {
 
-    private ListProfilesFragmentBinding binding;
-    private ListProfileFragmentModel model;
-    private DNDPermissionAdapter dndPermissionAdapter;
-    private ProfileListAdapter profileListAdapter;
+     private ListProfilesFragmentBinding binding;
+     private ListProfileFragmentModel model;
+     private DNDPermissionAdapter dndPermissionAdapter;
+     private ProfileListAdapter profileListAdapter;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        model = new ViewModelProvider(requireActivity()).get(ListProfileFragmentModel.class);
-    }
+     @Override
+     public void onCreate(@Nullable Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         model = new ViewModelProvider(requireActivity()).get(ListProfileFragmentModel.class);
+     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = ListProfilesFragmentBinding.inflate(inflater);
-        model.onProfileDeleteStatus.observe(getViewLifecycleOwner(), status -> Snackbar.make(binding.getRoot(), status.getMessage(requireContext()),
-                BaseTransientBottomBar.LENGTH_LONG)
-                .setAnchorView(requireActivity().findViewById(R.id.bottom_navigation))
-                .show());
+     @Nullable
+     @Override
+     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+         binding = ListProfilesFragmentBinding.inflate(inflater);
+         model.onProfileDeleteStatus.observe(getViewLifecycleOwner(), status -> Snackbar.make(binding.getRoot(), status.getMessage(requireContext()),
+                 BaseTransientBottomBar.LENGTH_LONG)
+                 .setAnchorView(requireActivity().findViewById(R.id.bottom_navigation))
+                 .show());
         return binding.getRoot();
     }
 
@@ -62,9 +62,7 @@ public class ListProfilesFragment extends Fragment {
 
 
         if(dndPermissionAdapter == null && profileListAdapter == null) {
-            dndPermissionAdapter = new DNDPermissionAdapter(() -> {
-                startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
-            });
+            dndPermissionAdapter = new DNDPermissionAdapter(() -> startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)));
             profileListAdapter = new ProfileListAdapter();
             profileListAdapter.setInteractor(new ProfileAdapterInteractor() {
                 @Override
@@ -72,7 +70,7 @@ public class ListProfilesFragment extends Fragment {
                     ListProfilesFragmentDirections.ActionMenuShowListToMenuAddProfile actionMenuShowListToMenuAddProfile
                             = ListProfilesFragmentDirections.actionMenuShowListToMenuAddProfile();
                     actionMenuShowListToMenuAddProfile.setMode(MODE.UPDATE.getValue());
-                    actionMenuShowListToMenuAddProfile.setProfileIndex(index);
+                    actionMenuShowListToMenuAddProfile.setProfile(model.getProfileAt(index));
                     NavHostFragment.findNavController(ListProfilesFragment.this)
                             .navigate(actionMenuShowListToMenuAddProfile);
                 }
@@ -106,10 +104,9 @@ public class ListProfilesFragment extends Fragment {
                             .setTitle(R.string.warning)
                             .setCancelable(false)
                             .setMessage(R.string.delete_profile_question)
-                            .setPositiveButton(R.string.yes, (dialog, which) -> {
-                                model.deleteProfile(profileListAdapter.getProfileAt(viewHolder.getBindingAdapterPosition()));
-                            })
-                            .setNegativeButton(R.string.no, (dialog, which) -> profileListAdapter.notifyItemChanged(viewHolder.getBindingAdapterPosition())).show();
+                            .setPositiveButton(R.string.yes, (dialog, which) -> model.deleteProfile(profileListAdapter.getProfileAt(viewHolder.getBindingAdapterPosition())))
+                            .setNegativeButton(R.string.no, (dialog, which) ->
+                                    profileListAdapter.notifyItemChanged(viewHolder.getBindingAdapterPosition())).show();
 
                 }
                 else
@@ -120,8 +117,9 @@ public class ListProfilesFragment extends Fragment {
         model.dndPermissionRequired.observe(getViewLifecycleOwner(), aBoolean -> {
             dndPermissionAdapter.displayRationale(aBoolean);
             profileListAdapter.setDndPermissionNotGranted(aBoolean);
+            if (aBoolean)
+                model.removeEventsForProfiles();
             dndPermissionAdapter.notifyDataSetChanged();
-
         });
         model.getAllProfiles().observe(getViewLifecycleOwner(), profileTuples -> {
             boolean empty = profileTuples.isEmpty();

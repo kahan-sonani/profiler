@@ -1,6 +1,7 @@
 package com.reb3llion.profiler.presenter.models;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
@@ -21,16 +22,15 @@ import com.reb3llion.profiler.presenter.enums.STATUS;
 import com.reb3llion.profiler.presenter.fragments.AddOrEditProfileFragmentArgs;
 
 import java.util.Calendar;
-import java.util.Objects;
 
 
-public class AddEditProfileFragmentModel extends AndroidViewModel implements AsyncExecutor.AsyncCallback {
+public class AddEditProfileFragmentModel extends AndroidViewModel implements AsyncExecutor.AsyncCallback<STATUS> {
 
     private MODE mode;
     public SingleEvent<STATUS> addProfileSuccessful;
     public SingleEvent<STATUS> invalidCredentials;
 
-    private UseCaseAddOrEditProfile useCaseAddOrEditProfile;
+    private final UseCaseAddOrEditProfile useCaseAddOrEditProfile;
 
     private static final String TAG = "AddEditProfileFragmentModel";
     public Profile profile;
@@ -54,7 +54,7 @@ public class AddEditProfileFragmentModel extends AndroidViewModel implements Asy
     private MaterialTimePicker getPicker(String time){
         Profile.Time temp = new Profile.Time(-1, -1);
         if(Profile.PLACEHOLDER_TIME.compareTo(time) == 0) {
-            temp.hour = Calendar.getInstance().get(Calendar.HOUR);
+            temp.hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             temp.minute = Calendar.getInstance().get(Calendar.MINUTE);
         }else{
              temp = Profile.Time.ToTimeObject(time);
@@ -69,16 +69,11 @@ public class AddEditProfileFragmentModel extends AndroidViewModel implements Asy
     }
 
     public boolean isProfileValid(){
-        return profile.isProfileValid();
+        return ProfileManagement.isProfileValid(profile);
     }
 
     public void addUpdateProfile() {
-        if(mode == MODE.ADD){
-            useCaseAddOrEditProfile.addProfile(profile, this);
-        }
-        else {
-            useCaseAddOrEditProfile.updateProfile(profile, this);
-        }
+        useCaseAddOrEditProfile.addOrUpdateProfile(profile, mode, this);
     }
 
     @Override
@@ -87,21 +82,21 @@ public class AddEditProfileFragmentModel extends AndroidViewModel implements Asy
     }
 
     @Override
-    public void onSuccess(STATUS result) {
-        addProfileSuccessful.postValue(result);
+    public void onSuccess(AsyncExecutor.Data<STATUS> result) {
+        addProfileSuccessful.postValue(result.getData());
     }
 
     @Override
-    public void onFailure(STATUS error) {
-        invalidCredentials.postValue(error);
+    public void onFailure(AsyncExecutor.Data<STATUS> error) {
+        invalidCredentials.postValue(error.getData());
     }
 
     public void initFragment(Fragment fragment){
         if(fragment.getArguments() != null) {
             AddOrEditProfileFragmentArgs args = AddOrEditProfileFragmentArgs.fromBundle(fragment.getArguments());
-            if (args.getMode() == MODE.UPDATE.getValue() && args.getProfileIndex() != -1) {
-                this.profile = new Profile(Objects.requireNonNull(
-                        ProfileManagement.getInstance().getProfiles().getValue()).get(args.getProfileIndex()));
+            if (args.getMode() == MODE.UPDATE.getValue() && args.getProfile() != null) {
+                mode = MODE.UPDATE;
+                this.profile = new Profile(args.getProfile());
             }
         }
     }
@@ -111,7 +106,7 @@ public class AddEditProfileFragmentModel extends AndroidViewModel implements Asy
             @Override
             public void handleOnBackPressed() {
                 final NavController controller = NavHostFragment.findNavController(fragment);
-                if(isProfileValid() && isEnabled()) {
+                if (isProfileValid() && isEnabled()) {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(fragment.requireActivity())
                             .setTitle(R.string.warning)
                             .setMessage(R.string.discard_profile)
@@ -121,7 +116,7 @@ public class AddEditProfileFragmentModel extends AndroidViewModel implements Asy
                             })
                             .setNegativeButton(fragment.getString(R.string.no), (dialog, which) -> dialog.dismiss());
                     alertDialogBuilder.show();
-                }else{
+                } else {
                     setEnabled(false);
                     controller.popBackStack();
                 }
@@ -129,6 +124,13 @@ public class AddEditProfileFragmentModel extends AndroidViewModel implements Asy
 
         };
     }
+
+    public MaterialAlertDialogBuilder getDialog(Context context) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        builder.setCancelable(false);
+        return builder;
+    }
+
     public MODE getMode() {
         return mode;
     }

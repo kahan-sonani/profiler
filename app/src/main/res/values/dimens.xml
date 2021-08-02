@@ -17,4 +17,5 @@
     <dimen name="volume_selection_button_size">28sp</dimen>
     <dimen name="padding_between_views_checkbox">16dp</dimen>
     <dimen name="am_pm_ts">12sp</dimen>
+    <dimen name="help_summary_size">14sp</dimen>
 </resources>

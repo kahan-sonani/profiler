@@ -2,15 +2,14 @@
     <string name="app_name">Profiler</string>
     <string name="menu_help">Help</string>
     <string name="what_does_this_app_do">What does this app do?</string>
-    <string name="app_usage">Every Profile contains start-time, end-time and volume-settings mentioned below,\n\n• Do Not Disturb\n• Media\n• Notification\n• System\n• Call\n• Ringtone\n\nIf a profile is activated, app will apply volume-settings during the user specified time-period and the previous volume-settings
-        will be saved and retained once the time-period is over.\n\n<b>Note:</b> Enabling DND option will override volume settings in the profile.</string>
+    <string name="app_usage">A profile is a setting which will be applied in the future(if enabled) for a specified time duration for every day of the week. The previous volume settings will be retained once the time duration is over.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
     <string name="chart">Chart</string>
     <string name="profile_timeline">Graph</string>
     <string name="profile_list">Profiles</string>
-    <string name="to">-</string>
+    <string name="to">to</string>
     <string name="volume_slider">Volume Slider</string>
 
     <string name="media">Media</string>
@@ -72,11 +71,40 @@
     <string name="no_thanks">No, Thanks</string>
     <string name="go_to_settings">Go to Settings</string>
     <string name="dnd_rationale_2">This icon in the profile means that the profile won\'t run without the DND permission. Go to Settings to grant the permission.</string>
-
+    <string name="time_invalid">Time Invalid or not selected.</string>
+    <string name="days_not_selected">Week Days not selected.</string>
+    <string name="volume_settings_not_selected">Volume Settings not selected.</string>
     <string-array name="themes_values">
         <item>MODE_NIGHT_FOLLOW_SYSTEM</item>
         <item>MODE_NIGHT_NO</item>
         <item>MODE_NIGHT_YES</item>
         <item>MODE_NIGHT_AUTO_BATTERY</item>
     </string-array>
+
+    <string name="ACTION_PROFILE_BROADCAST_RECEIVER_ACTION">android.profiler.PROFILER_BROADCAST_RECEIVER</string>
+    <string name="profile_fetch_successful">Profile Fetched!</string>
+    <string name="profile_fetch_un_successful">Profile Fetch Error!</string>
+    <string name="priority_only">Priority Only</string>
+    <string name="priority_only_summary">This won\'t mute sounds from music, videos, games, or other media.</string>
+    <string name="total_silence">Total Silence</string>
+    <string name="total_silence_summary">All the Volume Streams will get Silent.</string>
+    <string name="alarms_only_summary">Alarms, music or video during this time won\'t get Mute.</string>
+    <string name="alarms_only">Alarms Only</string>
+    <string name="label">Label</string>
+    <string name="no_label">No Label</string>
+    <string name="permission_denied_message">Permission is required</string>
+    <string name="error_fetch_profiles">Cannot get all the profiles.</string>
+    <string name="no_conflict">No Conflict.</string>
+    <string name="error_conflict_message">Error saving due to Conflicts with the days of</string>
+    <string name="dnd_preference">DND Preference</string>
+    <string name="normal">Normal</string>
+    <string name="normal_summary">DND will be considered turned off if this is selected.</string>
+    <string name="channel_name">Profile Events</string>
+    <string name="channel_description">Events of Time in which any Profile applies the profile till any specified time.</string>
+    <string name="max_stream_volume">MaxStreamVolume</string>
+    <string name="add_or_edit_profile">Add or Edit Profile</string>
+    <string name="add_summary">To add a profile click on the icon at the bottom and specify the volume settings and time, Click on the profile in the list to update the settings.</string>
+    <string name="delete_a_profile">Delete a profile</string>
+    <string name="swipe_left_to_delete_a_profile">Swipe left in the list to delete a profile.</string>
+    <string name="extra_help">Use switch to enable or disable a profile.\nDot after label of profile means its running.\n\nVolume settings include 5 volumes and also a DND option. You can set the volume level of this 5 volumes by enabling it first and then clicking on the number located at the right of the volume name in the Add/Edit page of the profile.</string>
 </resources>

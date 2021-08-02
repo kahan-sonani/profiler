@@ -15,6 +15,11 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.Profiler.HomeAppBarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextAppearance">@style/Theme.Profiler.TextAppearance</item>
+        <item name="android:background">@color/reply_blue_medium</item>
+    </style>
+
     <style name="WeekDaySelectorStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12dp</item>
@@ -29,8 +34,15 @@
         <item name="android:padding">@dimen/padding_between_views_1x5</item>
     </style>
 
-    <style name="ThemeOptionsStyle" parent="ThemeOverlay.AppCompat.Dark"/>
-    <style name="ThemePopUpStyle" parent="ThemeOverlay.AppCompat.Dark"/>
+    <style name="Theme.Profiler.BottomNavigationStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="itemIconTint">@color/reply_blue_very_light</item>
+        <item name="itemTextColor">@color/reply_blue_very_light</item>
+        <item name="android:background">@color/reply_blue_medium</item>
+    </style>
+
+    <style name="ThemeOptionsStyle" parent="ThemeOverlay.AppCompat.Dark" />
+
+    <style name="ThemePopUpStyle" parent="ThemeOverlay.AppCompat.Dark" />
 
     <style name="divider_style">
         <item name="android:background">@color/color_background</item>

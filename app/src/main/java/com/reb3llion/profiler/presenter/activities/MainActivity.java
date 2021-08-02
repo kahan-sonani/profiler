@@ -16,7 +16,7 @@ import com.reb3llion.profiler.R;
 import com.reb3llion.profiler.presenter.fragments.HelpFragment;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private HelpFragment helpFragment;
 

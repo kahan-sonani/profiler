@@ -4,9 +4,13 @@
 
     <data>
 
+        <import type="com.reb3llion.profiler.domain.business.ProfileManagement" />
+
         <import type="com.reb3llion.profiler.data.repository.room.entities.Profile" />
+
         <import type="com.reb3llion.profiler.data.repository.room.entities.Profile.Time" />
-        <import type="com.reb3llion.profiler.domain.TimeFormat" />
+
+        <import type="com.reb3llion.profiler.domain.business.TimeFormat" />
 
         <variable
             name="application"
@@ -28,16 +32,42 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/time_header"
+                android:id="@+id/profile_label_header"
                 style="@style/SubHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/padding_between_views"
                 android:paddingTop="@dimen/padding_between_views"
-                android:text="@string/time"
+                android:text="@string/label"
                 android:textColor="?attr/colorPrimary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/profileLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:maxLength="30"
+                android:paddingStart="@dimen/padding_between_views"
+                android:paddingTop="@dimen/padding_between_views_half"
+                android:paddingEnd="@dimen/padding_between_views"
+                android:paddingBottom="@dimen/padding_between_views_half"
+                android:text="@={model.profile.label}"
+                android:textAppearance="@style/SubHeading"
+                android:textColor="@color/text_color"
+                app:layout_constraintTop_toBottomOf="@id/profile_label_header" />
+
+            <TextView
+                android:id="@+id/time_header"
+                style="@style/SubHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/padding_between_views"
+                android:text="@string/time"
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profileLabel" />
 
             <RelativeLayout
                 android:id="@+id/start_time_layout"
@@ -47,7 +77,6 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/time_header">
 
                 <ImageView
@@ -67,19 +96,19 @@
                     android:paddingStart="@dimen/padding_between_views">
 
                     <TextView
-                        android:textColor="@color/text_color"
                         style="@style/SubHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/start_time" />
+                        android:text="@string/start_time"
+                        android:textColor="@color/text_color" />
 
                     <TextView
-                        android:textColor="@color/text_color"
                         android:id="@+id/start_time"
                         style="@style/SubHeading"
-                        android:text="@{TimeFormat.getTimeStringWithTypography(model.profile.startTime)}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@{TimeFormat.getTimeStringWithTypography(model.profile.startTime)}"
+                        android:textColor="@color/text_color"
                         android:textSize="14sp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </RelativeLayout>
@@ -117,19 +146,19 @@
                     android:paddingStart="@dimen/padding_between_views">
 
                     <TextView
-                        android:textColor="@color/text_color"
                         style="@style/SubHeading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/end_time" />
+                        android:text="@string/end_time"
+                        android:textColor="@color/text_color" />
 
                     <TextView
-                        android:textColor="@color/text_color"
                         android:id="@+id/end_time"
                         style="@style/SubHeading"
-                        android:text="@{TimeFormat.getTimeStringWithTypography(model.profile.endTime)}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@{TimeFormat.getTimeStringWithTypography(model.profile.endTime)}"
+                        android:textColor="@color/text_color"
                         android:textSize="14sp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </RelativeLayout>
@@ -149,14 +178,14 @@
 
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:padding="@dimen/padding_between_views_half"
-                android:paddingStart="@dimen/padding_between_views"
-                android:paddingEnd="@dimen/padding_between_views"
-                app:layout_constraintTop_toBottomOf="@id/week_day_picker_header"
                 android:id="@+id/weekDayPicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="7">
+                android:padding="@dimen/padding_between_views_half"
+                android:paddingStart="@dimen/padding_between_views"
+                android:paddingEnd="@dimen/padding_between_views"
+                android:weightSum="7"
+                app:layout_constraintTop_toBottomOf="@id/week_day_picker_header">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/sun"
@@ -234,55 +263,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/weekDayPicker" />
 
-            <ImageView
-                android:id="@+id/dnd_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/media"
-                android:padding="@dimen/padding_between_views"
-                android:paddingEnd="0dp"
-                android:src="@drawable/ic_outline_do_not_disturb_on_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/volume_setting_header" />
-
-            <TextView
-                android:textColor="@color/text_color"
-                android:id="@+id/dnd_header"
-                style="@style/SubHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/padding_between_views"
-                android:text="@string/do_not_disturb"
-                app:layout_constraintBottom_toTopOf="@id/dnd_divider"
-                app:layout_constraintStart_toEndOf="@id/dnd_icon"
-                app:layout_constraintTop_toBottomOf="@id/volume_setting_header" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/dnd_enable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/padding_between_views"
-                android:checked="@={model.profile.dnd}"
-                app:layout_constraintBottom_toTopOf="@id/dnd_divider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/volume_setting_header" />
-
-            <View
-                android:id="@+id/dnd_divider"
-                style="@style/divider_style"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                app:layout_constraintTop_toBottomOf="@id/dnd_icon" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/media_volume"
+                style="@style/VolumeSliderOpenButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/VolumeSliderOpenButtonStyle"
-                android:enabled='@{(!model.profile.dnd &amp;&amp; model.profile.mediaSelected)}'
+                android:enabled='@{(model.profile.dndPreference == 1 &amp;&amp; model.profile.mediaSelected)}'
                 android:text="@{String.valueOf(model.profile.media)}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dnd_divider" />
+                app:layout_constraintTop_toBottomOf="@id/volume_setting_header" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/check_media"
@@ -291,14 +281,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_between_views_checkbox"
-                android:enabled="@{!model.profile.dnd}"
                 android:checked="@={model.profile.mediaSelected}"
+                android:enabled="@{model.profile.dndPreference == 1}"
                 android:text="@string/media"
                 android:textAppearance="@style/SubHeading"
                 android:textColor="@color/text_color"
                 app:layout_constraintBottom_toTopOf="@id/media_volume_divider"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dnd_divider" />
+                app:layout_constraintTop_toBottomOf="@id/volume_setting_header" />
 
             <View
                 android:id="@+id/media_volume_divider"
@@ -309,11 +299,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/notification_volume"
+                style="@style/VolumeSliderOpenButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled='@{(!model.profile.dnd &amp;&amp; model.profile.notificationSelected)}'
+                android:enabled='@{(model.profile.dndPreference == 1 &amp;&amp; model.profile.notificationSelected)}'
                 android:text="@{String.valueOf(model.profile.notification)}"
-                style="@style/VolumeSliderOpenButtonStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/media_volume_divider" />
 
@@ -328,14 +318,14 @@
                 app:layout_constraintTop_toBottomOf="@id/media_volume_divider" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
-                context="@{application}"
                 android:id="@+id/check_notification"
+                context="@{application}"
                 extraPadding="@{17.0f}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_between_views_checkbox"
-                android:enabled="@{!model.profile.dnd}"
                 android:checked="@={model.profile.notificationSelected}"
+                android:enabled="@{model.profile.dndPreference == 1}"
                 android:text="@string/notification"
                 android:textAppearance="@style/SubHeading"
                 android:textColor="@color/text_color"
@@ -352,23 +342,23 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/ringtone_volume"
+                style="@style/VolumeSliderOpenButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled='@{(!model.profile.dnd &amp;&amp; model.profile.ringtoneSelected)}'
+                android:enabled='@{(model.profile.dndPreference == 1 &amp;&amp; model.profile.ringtoneSelected)}'
                 android:text="@{String.valueOf(model.profile.ringtone)}"
-                style="@style/VolumeSliderOpenButtonStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/notification_volume_divider" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
-                context="@{application}"
                 android:id="@+id/check_ringtone"
+                context="@{application}"
                 extraPadding="@{17.0f}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_between_views_checkbox"
-                android:enabled="@{!model.profile.dnd}"
                 android:checked="@={model.profile.ringtoneSelected}"
+                android:enabled="@{model.profile.dndPreference == 1}"
                 android:text="@string/ringtone"
                 android:textAppearance="@style/SubHeading"
                 android:textColor="@color/text_color"
@@ -385,23 +375,23 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/alarm_volume"
+                style="@style/VolumeSliderOpenButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled='@{(!model.profile.dnd &amp;&amp; model.profile.alarmSelected)}'
+                android:enabled='@{(model.profile.dndPreference == 1 &amp;&amp; model.profile.alarmSelected)}'
                 android:text="@{String.valueOf(model.profile.alarm)}"
-                style="@style/VolumeSliderOpenButtonStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ringtone_volume_divider" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
-                context="@{application}"
                 android:id="@+id/check_alarm"
+                context="@{application}"
                 extraPadding="@{17.0f}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_between_views_checkbox"
-                android:enabled="@{!model.profile.dnd}"
                 android:checked="@={model.profile.alarmSelected}"
+                android:enabled="@{model.profile.dndPreference == 1}"
                 android:text="@string/alarm"
                 android:textAppearance="@style/SubHeading"
                 android:textColor="@color/text_color"
@@ -418,23 +408,23 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/call_volume"
+                style="@style/VolumeSliderOpenButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled='@{(!model.profile.dnd &amp;&amp; model.profile.callSelected)}'
+                android:enabled='@{(model.profile.dndPreference == 1 &amp;&amp; model.profile.callSelected)}'
                 android:text="@{String.valueOf(model.profile.call)}"
                 app:layout_constraintEnd_toEndOf="parent"
-                style="@style/VolumeSliderOpenButtonStyle"
                 app:layout_constraintTop_toBottomOf="@id/alarm_volume_divider" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/check_call"
                 context="@{application}"
                 extraPadding="@{17.0f}"
-                android:id="@+id/check_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_between_views_checkbox"
-                android:enabled="@{!model.profile.dnd}"
                 android:checked="@={model.profile.callSelected}"
+                android:enabled="@{model.profile.dndPreference == 1}"
                 android:text="@string/call"
                 android:textAppearance="@style/SubHeading"
                 android:textColor="@color/text_color"
@@ -454,8 +444,8 @@
                 style="@style/SubHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/padding_between_views_3x5"
                 android:layout_marginTop="@dimen/padding_between_views"
+                android:layout_marginEnd="@dimen/padding_between_views_3x5"
                 android:text="@string/save"
                 app:icon="@drawable/ic_baseline_save_24"
                 app:layout_constraintEnd_toEndOf="parent"

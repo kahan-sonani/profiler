@@ -15,9 +15,10 @@
             android:name="mode"
             app:argType="integer" />
         <argument
-            android:defaultValue="-1"
-            android:name="profileIndex"
-            app:argType="integer" />
+            android:name="profile"
+            android:defaultValue="@null"
+            app:argType="com.reb3llion.profiler.data.repository.room.entities.Profile"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/menu_show_graph"

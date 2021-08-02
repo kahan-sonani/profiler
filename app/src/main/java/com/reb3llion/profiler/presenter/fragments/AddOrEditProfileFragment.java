@@ -1,9 +1,11 @@
 package com.reb3llion.profiler.presenter.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -19,9 +21,17 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.reb3llion.profiler.R;
+import com.reb3llion.profiler.data.repository.room.entities.Profile;
+import com.reb3llion.profiler.databinding.DndPreferencesBinding;
 import com.reb3llion.profiler.databinding.FragmentAddEditProfileBinding;
+import com.reb3llion.profiler.databinding.LabelEditTextBinding;
+import com.reb3llion.profiler.databinding.VolumeSliderLayoutBinding;
+import com.reb3llion.profiler.domain.business.ProfileManagement;
+import com.reb3llion.profiler.domain.business.StreamMinMaxValuesStore;
+import com.reb3llion.profiler.domain.business.TimeFormat;
 import com.reb3llion.profiler.presenter.models.AddEditProfileFragmentModel;
-import com.reb3llion.profiler.domain.TimeFormat;
+
+import java.util.Objects;
 
 
 public class AddOrEditProfileFragment extends Fragment implements View.OnClickListener {
@@ -29,8 +39,9 @@ public class AddOrEditProfileFragment extends Fragment implements View.OnClickLi
     private FragmentAddEditProfileBinding binding;
     private AddEditProfileFragmentModel model;
     private OnBackPressedCallback callback;
-    private View dialogRootView;
-    private Slider slider;
+    private VolumeSliderLayoutBinding sliderBinding;
+    private LabelEditTextBinding editTextBinding;
+    private DndPreferencesBinding dndPreferencesBinding;
 
     private static final String TIME_PICKER_TAG = "time_picker_tag";
 
@@ -68,6 +79,9 @@ public class AddOrEditProfileFragment extends Fragment implements View.OnClickLi
 
         model.addProfileSuccessful.observe(getViewLifecycleOwner(), status -> NavHostFragment.findNavController(AddOrEditProfileFragment.this)
                 .popBackStack());
+
+        initDNDPreference();
+        initLabelView();
         initTimePickers();
         initVolumeSliders();
     }
@@ -93,6 +107,7 @@ public class AddOrEditProfileFragment extends Fragment implements View.OnClickLi
     }
 
     private void initVolumeSliders() {
+        sliderBinding = VolumeSliderLayoutBinding.inflate(getLayoutInflater());
         binding.alarmVolume.setOnClickListener(this);
         binding.notificationVolume.setOnClickListener(this);
         binding.mediaVolume.setOnClickListener(this);
@@ -103,40 +118,43 @@ public class AddOrEditProfileFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        dialogRootView = requireActivity().getLayoutInflater()
-                .inflate(R.layout.volume_slider_layout, null);
-        builder.setView(dialogRootView);
-        builder.setCancelable(false);
-        builder.setOnDismissListener(dialog -> ((ViewGroup) dialogRootView.getParent()).removeView(dialogRootView));
-
-        slider = dialogRootView.findViewById(R.id.volume_slider);
+        StreamMinMaxValuesStore streamMinMaxValuesStore = new StreamMinMaxValuesStore();
+        MaterialAlertDialogBuilder builder = model.getDialog(requireContext());
+        builder.setOnDismissListener(dialog -> ((ViewGroup) sliderBinding.getRoot().getParent()).removeView(sliderBinding.getRoot()));
+        builder.setView(sliderBinding.getRoot());
+        Slider slider = sliderBinding.volumeSlider;
         int id = v.getId();
-        if(id == R.id.alarm_volume){
+        if (id == R.id.alarm_volume) {
+            slider.setValueTo(streamMinMaxValuesStore.getAlarmMax());
             slider.setValue(model.profile.getAlarm());
             builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                     .setTitle(getString(R.string.alarm))
                     .setPositiveButton(getString(R.string.yes),
                             (dialog, which) -> model.profile.setAlarm((int) slider.getValue()));
-        }else if(id == R.id.media_volume ){
+        } else if (id == R.id.media_volume) {
+            slider.setValueTo(streamMinMaxValuesStore.getMediaMax());
             slider.setValue(model.profile.getMedia());
             builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                     .setTitle(getString(R.string.media))
                     .setPositiveButton(getString(R.string.yes),
                             (dialog, which) -> model.profile.setMedia((int) slider.getValue()));
-        }else if(id == R.id.notification_volume){
+        } else if (id == R.id.notification_volume) {
+            slider.setValueTo(streamMinMaxValuesStore.getNotificationMax());
             slider.setValue(model.profile.getNotification());
             builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                     .setTitle(getString(R.string.notification))
                     .setPositiveButton(getString(R.string.yes),
                             (dialog, which) -> model.profile.setNotification((int) slider.getValue()));
-        }else if(id == R.id.ringtone_volume){
+        } else if (id == R.id.ringtone_volume) {
+            slider.setValueTo(streamMinMaxValuesStore.getRingtoneMax());
             slider.setValue(model.profile.getRingtone());
             builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                     .setTitle(getString(R.string.ringtone))
                     .setPositiveButton(getString(R.string.yes),
                             (dialog, which) -> model.profile.setRingtone((int) slider.getValue()));
-        }else if(id == R.id.call_volume){
+        } else if (id == R.id.call_volume) {
+            slider.setValueFrom(1);
+            slider.setValueTo(streamMinMaxValuesStore.getCallMax());
             slider.setValue(model.profile.getCall());
             builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                     .setTitle(getString(R.string.call))
@@ -146,4 +164,43 @@ public class AddOrEditProfileFragment extends Fragment implements View.OnClickLi
         builder.show();
     }
 
+    private void initLabelView() {
+        editTextBinding = LabelEditTextBinding.inflate(getLayoutInflater());
+        binding.profileLabel.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder builder = model.getDialog(requireContext());
+            builder.setOnDismissListener(dialog -> ((ViewGroup) editTextBinding.getRoot().getParent()).removeView(editTextBinding.getRoot()));
+            builder.setView(editTextBinding.getRoot());
+            if (ProfileManagement.isLabelSpecified(model.profile))
+                editTextBinding.label.setText(model.profile.getLabel());
+            editTextBinding.label.requestFocus();
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                if ("".equals(Objects.requireNonNull(editTextBinding.label.getText()).toString()))
+                    binding.profileLabel.setText(Profile.PLACEHOLDER_LABEL);
+                else
+                    binding.profileLabel.setText(editTextBinding.label.getText());
+
+            }).setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
+            builder.show();
+        });
+    }
+
+    private void initDNDPreference() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            dndPreferencesBinding = DndPreferencesBinding.inflate(getLayoutInflater());
+            binding.dndLayout.setOnClickListener(v -> {
+                dndPreferencesBinding.radiogrp.check(ProfileManagement.getResourceIdFromDNDPreference(model.profile.getDndPreference()));
+                model.getDialog(requireContext())
+                        .setOnDismissListener(dialog -> ((ViewGroup) dndPreferencesBinding.getRoot().getParent()).removeView(dndPreferencesBinding.getRoot()))
+                        .setView(dndPreferencesBinding.getRoot())
+                        .setPositiveButton(R.string.ok, (dialog, which) -> {
+                            RadioButton selected = dndPreferencesBinding.getRoot()
+                                    .findViewById(dndPreferencesBinding.radiogrp.getCheckedRadioButtonId());
+
+                            model.profile.setDndPreference(ProfileManagement.getDNDPreference(selected.getText().toString()));
+                        })
+                        .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                        .show();
+            });
+        }
+    }
 }

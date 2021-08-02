@@ -11,9 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.reb3llion.profiler.data.repository.room.entities.Profile;
 import com.reb3llion.profiler.databinding.ProfilerListItemBinding;
-import com.reb3llion.profiler.domain.PermissionManager;
-import com.reb3llion.profiler.domain.TimeFormat;
+import com.reb3llion.profiler.domain.business.PermissionManager;
+import com.reb3llion.profiler.domain.business.ProfileExecutionState;
 import com.reb3llion.profiler.domain.business.ProfileManagement;
+import com.reb3llion.profiler.domain.business.TimeFormat;
 
 import java.util.Objects;
 
@@ -21,8 +22,6 @@ public class ProfileListAdapter extends ListAdapter<Profile, ProfileListAdapter.
 
     private ProfileAdapterInteractor interactor;
     private boolean dndPermissionNotGranted;
-
-    public static final int TYPE = 1;
 
     public ProfileListAdapter() {
         super(DIFF_UTIL_CALLBACK);
@@ -60,38 +59,9 @@ public class ProfileListAdapter extends ListAdapter<Profile, ProfileListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProfileViewHolder holder, int position) {
 
-        StringBuilder builder = new StringBuilder();
         Profile tuple = getItem(position);
-        if (tuple.getSun()) {
-            builder.append(", ");
-            builder.append(Profile.SUN);
-        }
-        if (tuple.getMon()) {
-            builder.append(", ");
-            builder.append(Profile.MON);
-        }
-        if (tuple.getTue()) {
-            builder.append(", ");
-            builder.append(Profile.TUE);
-        }
-        if (tuple.getWed()) {
-            builder.append(", ");
-            builder.append(Profile.WED);
-        }
-        if (tuple.getThu()) {
-            builder.append(", ");
-            builder.append(Profile.THU);
-        }
-        if (tuple.getFri()) {
-            builder.append(", ");
-            builder.append(Profile.FRI);
-        }
-        if (tuple.getSat()) {
-            builder.append(", ");
-            builder.append(Profile.SAT);
-        }
-        builder.delete(0, 2);
-        holder.binding.days.setText(builder.toString());
+        holder.binding.profileLabel.setText(tuple.getLabel());
+        holder.binding.days.setText(ProfileManagement.getDayStringFromProfile(tuple));
         String s = TimeFormat.getTimeStringWithTypography(tuple.getStartTime());
         String e = TimeFormat.getTimeStringWithTypography(tuple.getEndTime());
         String[] splits = TimeFormat.splitTypographyAndTime(s);
@@ -101,13 +71,16 @@ public class ProfileListAdapter extends ListAdapter<Profile, ProfileListAdapter.
         holder.binding.profileEnable.setChecked(tuple.getEnable());
         holder.binding.amPmStart.setText(splits[1]);
         holder.binding.amPmEnd.setText(splite[1]);
-        holder.binding.dndAlert.setVisibility(ProfileManagement.doesProfileNeedDNDPermission(tuple) &&
-                dndPermissionNotGranted ? View.VISIBLE : View.GONE);
+        boolean value = ProfileManagement.doesProfileNeedDNDPermission(tuple) &&
+                dndPermissionNotGranted;
+        holder.binding.dndAlert.setVisibility(value ? View.VISIBLE : View.GONE);
+        holder.binding.profileEnable.setVisibility(value ? View.GONE : View.VISIBLE);
+        holder.binding.stateTick.setVisibility(tuple.getState().getInt() == ProfileExecutionState.RUNNING ? View.VISIBLE : View.GONE);
     }
 
     public class ProfileViewHolder extends RecyclerView.ViewHolder {
 
-        private ProfilerListItemBinding binding;
+        private final ProfilerListItemBinding binding;
 
         public ProfileViewHolder(ProfilerListItemBinding binding) {
             super(binding.getRoot());
@@ -120,11 +93,6 @@ public class ProfileListAdapter extends ListAdapter<Profile, ProfileListAdapter.
                 }
             });
         }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return TYPE;
     }
 
     public void setDndPermissionNotGranted(boolean dndPermissionNotGranted) {

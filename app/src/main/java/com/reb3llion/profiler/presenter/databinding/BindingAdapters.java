@@ -29,6 +29,7 @@ public class BindingAdapters {
         if(button.isChecked() != value)
             button.setChecked(value);
     }
+
     @BindingAdapter("checkedAttrChanged")
     public static void setCheckedListener(MaterialButton view,InverseBindingListener listener){
         view.addOnCheckedChangeListener((button, isChecked) -> listener.onChange());
@@ -40,7 +41,7 @@ public class BindingAdapters {
     }
 
 
-    @InverseBindingAdapter(attribute = "android:checked", event = "android:checkedAttrChanged")
+    /*@InverseBindingAdapter(attribute = "android:checked", event = "android:checkedAttrChanged")
     public static boolean getValue(MaterialCheckBox checkBox){
         return checkBox.isChecked();
     }
@@ -48,7 +49,7 @@ public class BindingAdapters {
     @BindingAdapter("android:checkedAttrChanged")
     public static void setCheckboxCheckedChangeListener(MaterialCheckBox checkBox, final InverseBindingListener listener){
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> listener.onChange());
-    }
+    }*/
 
     @BindingAdapter(value = {"extraPadding", "context"}, requireAll = true)
     public static void setExtraPadding(MaterialCheckBox checkBox,float value, Application application){
