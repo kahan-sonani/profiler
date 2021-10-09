@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemReselectedListener(item -> {
+        bottomNavigationView.setOnItemReselectedListener(item -> {
         });
         NavigationUI.setupWithNavController(bottomNavigationView,
                 Navigation.findNavController(this, R.id.navHostFragment));

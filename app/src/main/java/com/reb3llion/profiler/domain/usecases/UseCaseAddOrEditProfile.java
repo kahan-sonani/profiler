@@ -24,12 +24,9 @@ public class UseCaseAddOrEditProfile extends BaseUseCase {
 
         callback.onStart();
         setPlaceHolderLabel(profile);
-        if (!ProfileManagement.isTimeValid(profile))
-            callback.onFailure(new AsyncExecutor.Data<>(STATUS.TIME_INVALID));
-        else if (ProfileManagement.isNoDaySelected(profile))
-            callback.onFailure(new AsyncExecutor.Data<>(STATUS.DAYS_NOT_SELECTED));
-        else if (ProfileManagement.isNoVolumeSettingsSelected(profile))
-            callback.onFailure(new AsyncExecutor.Data<>(STATUS.VOLUME_SETTINGS_NOT_SELECTED));
+        STATUS status = ProfileManagement.getProfileStatus(profile);
+        if (status != STATUS.NO_ERROR)
+            callback.onFailure(new AsyncExecutor.Data<>(status));
         else {
             LiveData<List<Profile>> conflicts = appRepository.checkForConflictOfProfileTimePeriod(profile);
             conflicts.observeForever(new Observer<>() {

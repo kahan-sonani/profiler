@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import com.reb3llion.profiler.R;
 import com.reb3llion.profiler.data.repository.room.entities.Profile;
 import com.reb3llion.profiler.presenter.ProfilerApplication;
+import com.reb3llion.profiler.presenter.enums.STATUS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +114,7 @@ public class ProfileManagement {
 
         Profile.Time sTime = Profile.Time.ToTimeObject(profile.getStartTime());
         Profile.Time eTime = Profile.Time.ToTimeObject(profile.getEndTime());
-        if (sTime.hour > eTime.hour)
+        if (sTime.hour > eTime.hour && eTime.hour != 0)
             return false;
         else if (sTime.hour == eTime.hour) {
             return sTime.minute < eTime.minute;
@@ -199,4 +200,20 @@ public class ProfileManagement {
 
     }
 
+    public static STATUS getProfileStatus(Profile profile) {
+        STATUS status = STATUS.NO_ERROR;
+
+        Profile.Time startTime = Profile.Time.ToTimeObject(profile.getStartTime());
+        Profile.Time endTime = Profile.Time.ToTimeObject(profile.getEndTime());
+
+        if (!ProfileManagement.isTimeValid(profile))
+            status = STATUS.TIME_INVALID;
+        else if (endTime.hour == 0 && startTime.hour > endTime.hour)
+            status = STATUS.END_TIME_MUST_BE_SMALLER_THAN_12_AM;
+        else if (ProfileManagement.isNoDaySelected(profile))
+            status = STATUS.DAYS_NOT_SELECTED;
+        else if (ProfileManagement.isNoVolumeSettingsSelected(profile))
+            status = STATUS.VOLUME_SETTINGS_NOT_SELECTED;
+        return status;
+    }
 }

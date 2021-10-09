@@ -20,8 +20,10 @@
         <activity
             android:parentActivityName=".presenter.activities.MainActivity"
             android:label="@string/settings"
-            android:name=".presenter.activities.SettingsActivity"></activity>
-        <activity android:name=".presenter.activities.MainActivity">
+            android:name=".presenter.activities.SettingsActivity" />
+        <activity
+            android:name=".presenter.activities.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -107,4 +107,6 @@
     <string name="delete_a_profile">Delete a profile</string>
     <string name="swipe_left_to_delete_a_profile">Swipe left in the list to delete a profile.</string>
     <string name="extra_help">Use switch to enable or disable a profile.\nDot after label of profile means its running.\n\nVolume settings include 5 volumes and also a DND option. You can set the volume level of this 5 volumes by enabling it first and then clicking on the number located at the right of the volume name in the Add/Edit page of the profile.</string>
+    <string name="no_error">No Error</string>
+    <string name="end_time_error">End time must be smaller than 12:00 AM</string>
 </resources>
